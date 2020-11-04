@@ -1,45 +1,30 @@
 import { Injectable } from "@nestjs/common";
+import { CreateCatDto } from "./dto/create-cat.dto";
+import { Model } from "mongoose";
+import { InjectModel } from '@nestjs/mongoose';
+import { User, UserDocument } from '../schemas/user.schema';
 
 @Injectable()
 export class UserService {
-    getUsers() {
-        return [{
-            "_id" : {"$oid":"5c32521948892124cc199460"},
-            "name" : "Thrihnukagigur",
-            "email" : "thrihnukagigur@mail.com",
-            "password" : "",
-            "invitationCodeOwn" : "fad1623b-c09b-4547-876c-d31089c5d1d3",
-            "invitationCodeUsed" : "",
-            "attachedWorkspaces": [],
-            "attachedRooms": [],
-            "avatarColor" : "#8A2BE2",
-            "avatarImage" : {"$oid":"5dbc090893fc571c1662f422"},
-            "aboutMe" : "",
-            "del" : false,
-            "createdAt" : null,
-            "updatedAt" : null,
-            "deletedAt" : null
-        },
-        {
-            "_id" : {"$oid":"5c32521948892124cc199461"},
-            "name" : "Name2",
-            "email" : "theistareykjarbunga@mail.com",
-            "password" : "",
-            "invitationCodeOwn" : "aad1623b-c09b-4547-876c-d31089c5d1d4",
-            "invitationCodeUsed" : "",
-            "attachedWorkspaces": [],
-            "attachedRooms": [],
-            "avatarColor" : "#8A2BE2",
-            "avatarImage" : {"$oid":"5dbc090893fc571c1662f423"},
-            "aboutMe" : "",
-            "del" : false,
-            "createdAt" : null,
-            "updatedAt" : null,
-            "deletedAt" : null
-        }];
+    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+    async getUsers(): Promise<User[]> {
+        let users;
+        try {
+            users = await this.userModel.find();
+        } catch (err) {
+            throw err;
+        }
+        return users;
     }
 
-    newUser(): boolean {
-        return true;
+    async newUser(createCatDto: CreateCatDto): Promise<User> {
+        const user = new this.userModel(createCatDto);
+        try {
+            await user.save();
+        } catch (err) {
+            throw err;
+        }
+        return user;
     }
 }
