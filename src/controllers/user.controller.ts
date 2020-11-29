@@ -1,6 +1,7 @@
 import { Controller, Get, Post } from "@nestjs/common";
 import { UserService } from "../services/user.service";
 import { User } from "../schemas/user.schema";
+import {CreateUser } from "../dto/users.dto";
 
 @Controller('users')
 export class UserController {
@@ -11,7 +12,7 @@ constructor(private readonly UserService: UserService){}
     }
 
     @Post()
-    async newUser(name: string, password: string, email: string, del: boolean): Promise<User> {
-        return await this.UserService.newUser({name, email, password, del});
+    async newUser(user: CreateUser ): Promise<User> {
+        return await this.UserService.newUser(user);
     }
 }

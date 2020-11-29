@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { CreateCatDto } from "./dto/create-cat.dto";
+import { CreateUser } from "../dto/users.dto";
 import { Model } from "mongoose";
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
@@ -18,8 +18,8 @@ export class UserService {
         return users;
     }
 
-    async newUser(createCatDto: CreateCatDto): Promise<User> {
-        const user = new this.userModel(createCatDto);
+    async newUser(createUserDto: CreateUser): Promise<User> {
+        const user = new this.userModel(createUserDto);
         try {
             await user.save();
         } catch (err) {
