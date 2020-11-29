@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from "@nestjs/common";
+import { Controller, Get, Post, Body, Header, HttpCode, HttpStatus } from "@nestjs/common";
 import { UserService } from "../services/user.service";
 import { User } from "../schemas/user.schema";
 import {CreateUser } from "../dto/users.dto";
@@ -12,7 +12,8 @@ constructor(private readonly UserService: UserService){}
     }
 
     @Post()
-    async newUser(user: CreateUser ): Promise<User> {
+    @HttpCode(HttpStatus.CREATED)
+    async newUser(@Body() user: CreateUser ): Promise<User> {
         return await this.UserService.newUser(user);
     }
 }
