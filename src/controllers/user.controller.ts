@@ -13,6 +13,7 @@ constructor(private readonly UserService: UserService){}
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @Header("Cache-Control", "none")
     async newUser(@Body() user: CreateUser ): Promise<User> {
         return await this.UserService.newUser(user);
     }
