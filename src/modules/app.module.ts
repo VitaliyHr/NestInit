@@ -6,7 +6,7 @@ import { UserModule } from "./user.module";
 import config from "../config";
 
 @Module({
-  imports: [UserModule, MongooseModule.forRoot(config.mongoDb.mongoUri)],
+  imports: [UserModule, MongooseModule.forRoot(config.db.Uri)],
   controllers: [AppController],
   providers: [AppService],
 })
